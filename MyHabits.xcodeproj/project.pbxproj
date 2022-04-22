@@ -16,6 +16,9 @@
 		766CE4AC28118F3E00EB0176 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 766CE4AB28118F3E00EB0176 /* Launch Screen.storyboard */; };
 		766CE4AE2811941600EB0176 /* HabitsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766CE4AD2811941600EB0176 /* HabitsViewController.swift */; };
 		766CE4B02811949400EB0176 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766CE4AF2811949400EB0176 /* InfoViewController.swift */; };
+		766CE4B12812C7D900EB0176 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 766CE4AA28118CD500EB0176 /* SF-Pro-Text-Regular.otf */; };
+		766CE4B22812C7DC00EB0176 /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 766CE4A928118CD300EB0176 /* SF-Pro-Text-Semibold.otf */; };
+		766CE4B32812C7DE00EB0176 /* SF-Pro-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 766CE4A828118CCB00EB0176 /* SF-Pro-Display-Semibold.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -148,6 +151,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				766CE4B22812C7DC00EB0176 /* SF-Pro-Text-Semibold.otf in Resources */,
+				766CE4B12812C7D900EB0176 /* SF-Pro-Text-Regular.otf in Resources */,
+				766CE4B32812C7DE00EB0176 /* SF-Pro-Display-Semibold.otf in Resources */,
 				766CE4AC28118F3E00EB0176 /* Launch Screen.storyboard in Resources */,
 				766CE474281165ED00EB0176 /* Assets.xcassets in Resources */,
 			);
