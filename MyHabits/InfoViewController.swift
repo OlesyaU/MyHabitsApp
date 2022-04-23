@@ -18,7 +18,6 @@ class InfoViewController: UIViewController {
         let text = """
 Привычка за 21 день
 
-
 Прохождение этапов, за которые за 21 день вырабатывается привычка, подчиняется следующему алгоритму:
 
 1. Провести 1 день без обращения к старым привычкам, стараться вести себя так, как будто цель, загаданная в перспективу, находится на расстоянии шага.
@@ -41,10 +40,9 @@ class InfoViewController: UIViewController {
         let myRange = NSRange(location: 0, length: 20)
         textView.attributedText = mutText
         mutText.addAttributes([NSAttributedString.Key.font: UIFont(name: "SF Pro Display", size: 20)!], range: myRange)
-
         textView.attributedText = mutText
         return textView
-
+        
     }()
     
     override func viewDidLoad() {
@@ -65,9 +63,5 @@ class InfoViewController: UIViewController {
             textView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
-    //    private func title() {
-    //        for i in 0..textView.text.count{
-    //
-    //        }
-    //    }
+   
 }

@@ -29,8 +29,9 @@ private let habitVC = UINavigationController(rootViewController: HabitsViewContr
 
     private func setUpInitialFlow() {
         infoVC.tabBarItem.title = "Информация"
-        infoVC.tabBarItem.image = .init(systemName: "info")
+        infoVC.tabBarItem.image = .init(named: "info")
         habitVC.tabBarItem.title = "Привычки"
+        habitVC.tabBarItem.image = .init(named: "rows")
         habitVC.navigationBar.prefersLargeTitles = true
       
 
