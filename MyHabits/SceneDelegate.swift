@@ -44,6 +44,9 @@ private let habitVC = UINavigationController(rootViewController: HabitsViewContr
         navigationBarAppearance.configureWithOpaqueBackground()
         navigationBarAppearance.backgroundColor = .secondarySystemBackground
         UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
+        UINavigationBar.appearance().standardAppearance = navigationBarAppearance
+        UINavigationBar.appearance().compactScrollEdgeAppearance = navigationBarAppearance
+        UINavigationBar.appearance().compactAppearance = navigationBarAppearance
         
     }
     

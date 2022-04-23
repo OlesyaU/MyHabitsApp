@@ -19,6 +19,7 @@
 		766CE4B12812C7D900EB0176 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 766CE4AA28118CD500EB0176 /* SF-Pro-Text-Regular.otf */; };
 		766CE4B22812C7DC00EB0176 /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 766CE4A928118CD300EB0176 /* SF-Pro-Text-Semibold.otf */; };
 		766CE4B32812C7DE00EB0176 /* SF-Pro-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 766CE4A828118CCB00EB0176 /* SF-Pro-Display-Semibold.otf */; };
+		766CE4B52813EEE800EB0176 /* HabitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766CE4B42813EEE800EB0176 /* HabitViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		766CE4AB28118F3E00EB0176 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		766CE4AD2811941600EB0176 /* HabitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsViewController.swift; sourceTree = "<group>"; };
 		766CE4AF2811949400EB0176 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		766CE4B42813EEE800EB0176 /* HabitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				766CE47E2811667600EB0176 /* Habit.swift */,
 				766CE4AF2811949400EB0176 /* InfoViewController.swift */,
 				766CE4AD2811941600EB0176 /* HabitsViewController.swift */,
+				766CE4B42813EEE800EB0176 /* HabitViewController.swift */,
 				766CE480281166BC00EB0176 /* HabitsStore.swift */,
 				766CE482281166FB00EB0176 /* Date+Extension.swift */,
 				766CE473281165ED00EB0176 /* Assets.xcassets */,
@@ -169,6 +172,7 @@
 				766CE483281166FB00EB0176 /* Date+Extension.swift in Sources */,
 				766CE4AE2811941600EB0176 /* HabitsViewController.swift in Sources */,
 				766CE481281166BC00EB0176 /* HabitsStore.swift in Sources */,
+				766CE4B52813EEE800EB0176 /* HabitViewController.swift in Sources */,
 				766CE4B02811949400EB0176 /* InfoViewController.swift in Sources */,
 				766CE47F2811667600EB0176 /* Habit.swift in Sources */,
 				766CE46B281165E900EB0176 /* AppDelegate.swift in Sources */,

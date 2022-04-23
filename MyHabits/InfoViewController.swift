@@ -48,7 +48,6 @@ class InfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        tabBarItem.image = .init(systemName: "info")
         navigationItem.title = "Информация"
         layout()
     }
