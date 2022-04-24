@@ -163,14 +163,13 @@ class HabitViewController: UIViewController {
         dateString = datePicker.date.formatted(date: .omitted, time: .shortened)
         
         let text = "Каждый день в \(dateString) "
-        
         let attributedText = NSMutableAttributedString(string:text, attributes: [NSAttributedString.Key.font : UIFont(name: "SF Pro Text Regular", size: 17)!])
         let myRange = NSRange(location: 13, length: 9)
         attributedText.addAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "Violet")!], range: myRange)
         
-        print("from chooseDatePickerTime \(date)")
-        print(" from chooseDatePickerTime\(dateString)")
-        print("chooseDatePickerTime")
+//        print("from chooseDatePickerTime \(date)")
+//        print(" from chooseDatePickerTime\(dateString)")
+//        print("chooseDatePickerTime")
         
         labelTimeResult.attributedText = attributedText
         
