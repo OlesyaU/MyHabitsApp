@@ -25,6 +25,6 @@ class HabitsViewController: UIViewController {
         let nextVC = UINavigationController(rootViewController: HabitViewController())
         nextVC.modalPresentationStyle = .fullScreen
         navigationController?.present(nextVC, animated: true)
-        print("pushed button")
+        print("pushed button - addHibitButtonPushed")
     }
 }
