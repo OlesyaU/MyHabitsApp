@@ -10,13 +10,14 @@ import UIKit
 class HabitViewController: UIViewController {
     
     private let buttonHeight: CGFloat = 40
-//    private let colorHabit: UIColor? = nil
-//    private let date: Date? = nil
-    private let nameHabit: String = ""
+    private let colorHabit = UIColor()
+    private var date = Date()
+    private lazy var dateString = date.formatted(date: .omitted, time: .shortened)
+    private var nameHabit: String = ""
+    private var trackDates = [Date]()
+    private let habit = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
     
-    
-    
-//    private let habit = Habit(from: Codable.self as! Decoder)
+
     
     private let labelHibitName: UILabel = {
         let label = UILabel()
@@ -31,9 +32,9 @@ class HabitViewController: UIViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.font = UIFont(name: "SF Pro Text Semibold", size: 17)
         textField.textColor = UIColor(named: "Blue")
-        textField.placeholder = "Выпить стакан воды"
+        textField.placeholder = "Бегать по утрамб спать 8 часов и т.п."
         textField.textAlignment = .left
-        textField.keyboardAppearance = .alert
+        textField.addTarget(HabitViewController.self, action: #selector(tapToTextField), for: .touchUpInside)
          return textField
        }()
     
@@ -54,23 +55,29 @@ class HabitViewController: UIViewController {
         label.textAlignment = .left
         return label
     }()
+    
     private lazy var labelTimeResult: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        let text = "Каждый день в \(dateString)"
         label.font = UIFont(name: "SF Pro Text Regular", size: 17)
-//        label.text = habit.dateString
+        let attributedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.font : UIFont(name: "SF Pro Text Regular", size: 17)!])
+        let myRange = NSRange(location: 13, length: 8)
+        attributedText.addAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "Violet")!], range: myRange)
+        label.attributedText = attributedText
         label.textAlignment = .left
         return label
     }()
+    
     private let datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.date = Date()
-        datePicker.locale = .current
-        datePicker.datePickerMode = .countDownTimer
-        datePicker.preferredDatePickerStyle = .automatic
-      datePicker.timeZone = .current
-        datePicker.calendar = .current
+        datePicker.datePickerMode = .time
+        datePicker.preferredDatePickerStyle = .wheels
+//        datePicker.date = Date()
+//      datePicker.timeZone = .current
+//        datePicker.calendar = .current
+        datePicker.addTarget(self, action: #selector(chooseDatePickerTime), for: .valueChanged)
         return datePicker
     }()
     
@@ -136,20 +143,15 @@ class HabitViewController: UIViewController {
            deleteLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingConstraint),
            deleteLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -topConstraint),
            deleteLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -leadingConstraint)
-        
         ])
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        if textField.text == "" {
-            title = "Создать"
-        } else {
-            title = "Править"
-        }
     }
     
     private func setNavigationBar() {
+        title = "Создать"
        navigationController?.navigationBar.tintColor = UIColor(named: "Violet")
         navigationController?.navigationBar.tintColorDidChange()
         navigationItem.rightBarButtonItem = .init(title: "Сохранить", style: .done, target: self, action: #selector(keepButtonTapped))
@@ -158,11 +160,41 @@ class HabitViewController: UIViewController {
         
     }
     
+    @objc private func chooseDatePickerTime()  {
+        date = datePicker.date
+        dateString = datePicker.date.formatted(date: .omitted, time: .shortened)
+
+        let text = "Каждый день в \(dateString)"
+       
+        let attributedText = NSMutableAttributedString(string:text, attributes: [NSAttributedString.Key.font : UIFont(name: "SF Pro Text Regular", size: 17)!])
+
+        let myRange = NSRange(location: 13, length: 8)
+        attributedText.addAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "Violet")!], range: myRange)
+
+        print("from chooseDatePickerTime \(date)")
+        print(" from chooseDatePickerTime\(dateString)")
+        print("chooseDatePickerTime")
+
+        labelTimeResult.attributedText = attributedText
+      
+    }
+    
     @objc private func cancelButtonTapped() {
         print("cancelButtonTapped")
     }
     @objc private func keepButtonTapped(){
+        textField.resignFirstResponder()
+        nameHabit = textField.text ?? "text is lost"
+        date = datePicker.date
         print("keepButtonTapped")
+        print(nameHabit)
+        print("дэйт стринг из кипБаттон\(dateString)")
+        print("дата из кипБаттон \(date)")
     }
-
+    
+    @objc private func tapToTextField() {
+        textField.becomeFirstResponder()
+    }
+    
+   
 }

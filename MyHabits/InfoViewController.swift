@@ -35,14 +35,11 @@ class InfoViewController: UIViewController {
 Источник: psychbook.ru
 
 """
-        let attribute = [NSMutableAttributedString.Key.font: UIFont(name: "SF Pro Display", size: 20)]
         let mutText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.font: UIFont(name: "SF Pro Text", size: 17)!])
         let myRange = NSRange(location: 0, length: 20)
-        textView.attributedText = mutText
         mutText.addAttributes([NSAttributedString.Key.font: UIFont(name: "SF Pro Display", size: 20)!], range: myRange)
         textView.attributedText = mutText
         return textView
-        
     }()
     
     override func viewDidLoad() {
