@@ -40,6 +40,7 @@ class HabitViewController: UIViewController {
         textField.keyboardType = .namePhonePad
         textField.addTarget(self, action: #selector(keepButtonTapped), for: .primaryActionTriggered)
         textField.addTarget(self, action: #selector(tapToTextField), for: .touchUpInside)
+//        textField.textContentType = .username
         return textField
     }()
     

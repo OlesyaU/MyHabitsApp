@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension Date {
     
@@ -21,5 +22,11 @@ extension Date {
             date = newDate
         }
         return dates
+    }
+}
+
+extension UIView {
+    static var identifier: String {
+        return String(describing: self)
     }
 }
