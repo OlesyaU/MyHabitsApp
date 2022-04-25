@@ -9,14 +9,15 @@ import UIKit
 
 class HabitViewController: UIViewController {
     
-    private let buttonHeight: CGFloat = 40
-    private let colorHabit = UIColor()
+    private let buttonHeight: CGFloat = 30
+    private var colorHabit = UIColor()
     private var date = Date()
     private lazy var dateString = date.formatted(date: .omitted, time: .shortened)
     private var nameHabit: String = ""
     private var trackDates = [Date]()
     private let habit = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
     
+//    MARK: UI - Elements
     private let labelHibitName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -25,14 +26,20 @@ class HabitViewController: UIViewController {
         label.textAlignment = .left
         return label
     }()
-    private let textField: UITextField = {
+    
+    private lazy var textField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.font = UIFont(name: "SF Pro Text Semibold", size: 17)
         textField.textColor = UIColor(named: "Blue")
-        textField.placeholder = "Бегать по утрамб спать 8 часов и т.п."
+        textField.placeholder = "Бегать по утрам, спать 8 часов и т.п."
         textField.textAlignment = .left
-        textField.addTarget(HabitViewController.self, action: #selector(tapToTextField), for: .touchUpInside)
+        textField.clearButtonMode = .whileEditing
+        textField.returnKeyType = .done
+        textField.autocorrectionType = .no
+        textField.keyboardType = .namePhonePad
+        textField.addTarget(self, action: #selector(keepButtonTapped), for: .primaryActionTriggered)
+        textField.addTarget(self, action: #selector(tapToTextField), for: .touchUpInside)
         return textField
     }()
     
@@ -95,17 +102,21 @@ class HabitViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = CGFloat(buttonHeight / 2)
         button.backgroundColor = .cyan
+        button.addTarget(self, action: #selector(chooseHabitColorButtonTapped), for: .touchUpInside)
         return button
     }()
     
+//    MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
         layout()
     }
+    
+//  MARK: Constraints, settings UI
     private func layout() {
-        let leadingConstraint: CGFloat = 16
-        let topConstraint: CGFloat = 20
+        let leadingConstraint: CGFloat = 8
+        let topConstraint: CGFloat = 16
         [labelHibitName, labelColorName, labelTime, labelTimeResult, deleteLabel, colorButton, textField, datePicker].forEach({view.addSubview($0)})
         
         NSLayoutConstraint.activate([
@@ -115,21 +126,21 @@ class HabitViewController: UIViewController {
             labelHibitName.heightAnchor.constraint(equalToConstant: 30),
             
             textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingConstraint),
-            textField.topAnchor.constraint(equalTo: labelHibitName.bottomAnchor, constant: leadingConstraint / 2),
+            textField.topAnchor.constraint(equalTo: labelHibitName.bottomAnchor, constant: leadingConstraint),
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -leadingConstraint),
             textField.heightAnchor.constraint(equalToConstant: 40),
             
             labelColorName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingConstraint),
-            labelColorName.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: leadingConstraint / 2),
+            labelColorName.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: leadingConstraint ),
             labelColorName.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -leadingConstraint),
             
             colorButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingConstraint),
-            colorButton.topAnchor.constraint(equalTo: labelColorName.bottomAnchor, constant: leadingConstraint / 2),
+            colorButton.topAnchor.constraint(equalTo: labelColorName.bottomAnchor, constant: leadingConstraint ),
             colorButton.heightAnchor.constraint(equalToConstant: buttonHeight),
             colorButton.widthAnchor.constraint(equalToConstant: buttonHeight),
             
             labelTime.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingConstraint),
-            labelTime.topAnchor.constraint(equalTo: colorButton.bottomAnchor, constant: leadingConstraint / 2),
+            labelTime.topAnchor.constraint(equalTo: colorButton.bottomAnchor, constant: leadingConstraint ),
             labelTime.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -leadingConstraint),
             labelTimeResult.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leadingConstraint),
             labelTimeResult.topAnchor.constraint(equalTo: labelTime.bottomAnchor, constant: leadingConstraint / 2),
@@ -144,9 +155,6 @@ class HabitViewController: UIViewController {
         ])
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-    }
     
     private func setNavigationBar() {
         title = "Создать"
@@ -155,43 +163,60 @@ class HabitViewController: UIViewController {
         navigationItem.rightBarButtonItem = .init(title: "Сохранить", style: .done, target: self, action: #selector(keepButtonTapped))
         navigationItem.leftBarButtonItem = .init(title: "Отменить", style: .plain, target: self, action: #selector(cancelButtonTapped))
         view.backgroundColor = .white
-        
-    }
+   }
     
+//    MARK: Actions + Recognizers
     @objc private func chooseDatePickerTime()  {
         date = datePicker.date
         dateString = datePicker.date.formatted(date: .omitted, time: .shortened)
-        
         let text = "Каждый день в \(dateString) "
         let attributedText = NSMutableAttributedString(string:text, attributes: [NSAttributedString.Key.font : UIFont(name: "SF Pro Text Regular", size: 17)!])
         let myRange = NSRange(location: 13, length: 9)
         attributedText.addAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "Violet")!], range: myRange)
-        
-//        print("from chooseDatePickerTime \(date)")
-//        print(" from chooseDatePickerTime\(dateString)")
-//        print("chooseDatePickerTime")
-        
         labelTimeResult.attributedText = attributedText
         
-    }
+        print("from chooseDatePickerTime \(date)")
+        print("from chooseDatePickerTime\(dateString)")
+        print("chooseDatePickerTime")
+   }
     
     @objc private func cancelButtonTapped() {
+        dismiss(animated: true)
         print("cancelButtonTapped")
     }
+    
     @objc private func keepButtonTapped(){
         textField.resignFirstResponder()
         nameHabit = textField.text ?? "text is lost"
         date = datePicker.date
         print("keepButtonTapped")
-        print(nameHabit)
+        print("имя привычки -  \(nameHabit)")
+        print("Цвет привычки -  \(colorHabit)")
         print("дэйт стринг из кипБаттон\(dateString)")
         print("дата из кипБаттон \(date)")
+        let newHabit = Habit(name: nameHabit, date: date, color: colorHabit)
+        let store = HabitsStore.shared
+        store.habits.append(newHabit)
+        dismiss(animated: true)
     }
     
     @objc private func tapToTextField() {
         textField.becomeFirstResponder()
-        
     }
     
-    
+    @objc private func chooseHabitColorButtonTapped() {
+        let colorpicker = UIColorPickerViewController()
+        colorpicker.delegate = self
+        colorpicker.supportsAlpha = false
+        colorpicker.selectedColor = colorButton.backgroundColor ?? .blue
+        self.present(colorpicker, animated: true)
+    }
+}
+
+// MARK: Extensions
+extension HabitViewController: UIColorPickerViewControllerDelegate {
+    func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
+        colorHabit = color
+        colorButton.backgroundColor = color
+    }
 }

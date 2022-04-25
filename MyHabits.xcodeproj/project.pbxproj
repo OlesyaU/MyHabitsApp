@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		765728512816A64F002CA6AE /* HabitCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765728502816A64E002CA6AE /* HabitCollectionViewCell.swift */; };
 		766CE46B281165E900EB0176 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766CE46A281165E900EB0176 /* AppDelegate.swift */; };
 		766CE46D281165E900EB0176 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766CE46C281165E900EB0176 /* SceneDelegate.swift */; };
 		766CE474281165ED00EB0176 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 766CE473281165ED00EB0176 /* Assets.xcassets */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		765728502816A64E002CA6AE /* HabitCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitCollectionViewCell.swift; sourceTree = "<group>"; };
 		766CE467281165E900EB0176 /* MyHabits.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyHabits.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		766CE46A281165E900EB0176 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		766CE46C281165E900EB0176 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 				766CE47E2811667600EB0176 /* Habit.swift */,
 				766CE4AF2811949400EB0176 /* InfoViewController.swift */,
 				766CE4AD2811941600EB0176 /* HabitsViewController.swift */,
+				765728502816A64E002CA6AE /* HabitCollectionViewCell.swift */,
 				766CE4B42813EEE800EB0176 /* HabitViewController.swift */,
 				766CE480281166BC00EB0176 /* HabitsStore.swift */,
 				766CE482281166FB00EB0176 /* Date+Extension.swift */,
@@ -171,6 +174,7 @@
 			files = (
 				766CE483281166FB00EB0176 /* Date+Extension.swift in Sources */,
 				766CE4AE2811941600EB0176 /* HabitsViewController.swift in Sources */,
+				765728512816A64F002CA6AE /* HabitCollectionViewCell.swift in Sources */,
 				766CE481281166BC00EB0176 /* HabitsStore.swift in Sources */,
 				766CE4B52813EEE800EB0176 /* HabitViewController.swift in Sources */,
 				766CE4B02811949400EB0176 /* InfoViewController.swift in Sources */,
