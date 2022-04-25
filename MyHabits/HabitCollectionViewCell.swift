@@ -9,30 +9,38 @@ import UIKit
 
 class HabitCollectionViewCell: UICollectionViewCell {
     
-    let store = HabitsStore.shared
-    
-    private lazy var nameHabitLabel: UILabel = {
+    let store = HabitsStore.shared.habits
+   
+
+   lazy var nameHabitLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "SF Pro Text Semibold", size: 17)
         label.textColor = .systemGray
         label.numberOfLines = 2
-        label.text = "тут должно быть название привычки"
+        label.text = "Привычка"
         return label
     }()
-    
+   let imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "круг")
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
     private lazy var strideLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "SF Pro Text Semibold", size: 13)
+        label.font = UIFont(name: "SF Pro Text Regular", size: 13)
         label.textColor = .lightGray
-        label.text = "тут должна быть преиодичномть"
+        label.text = "Каждый день в "
         return label
     }()
     private let counterLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "SF Pro Text Semibold", size: 13)
+        label.font = UIFont(name: "SF Pro Text Regular", size: 13)
         label.textColor = .systemGray
         label.text = "Счётчик: "
         return label
@@ -40,6 +48,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .yellow
         layout()
     }
     
@@ -47,7 +56,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     private func layout() {
-        [nameHabitLabel, strideLabel, counterLabel].forEach({contentView.addSubview($0)})
+        [nameHabitLabel, strideLabel, counterLabel, imageView].forEach({contentView.addSubview($0)})
         let constraint: CGFloat = 16
         let height: CGFloat = 20
         let widthLabel: CGFloat = contentView.bounds.width - (contentView.bounds.width / 3)
@@ -65,11 +74,14 @@ class HabitCollectionViewCell: UICollectionViewCell {
             counterLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: constraint),
             counterLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -constraint),
             counterLabel.heightAnchor.constraint(equalToConstant: height),
-            counterLabel.widthAnchor.constraint(equalToConstant: widthLabel)
+            counterLabel.widthAnchor.constraint(equalToConstant: widthLabel),
+            
+            imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            imageView.heightAnchor.constraint(equalToConstant: height * 2),
+            imageView.widthAnchor.constraint(equalToConstant: height * 2), imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -constraint)
         
         ])
-        
-    }
-    
+   }
+   
     
 }

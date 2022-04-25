@@ -16,6 +16,7 @@ class HabitsViewController: UIViewController {
         collection.dataSource = self
         collection.delegate = self
         collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.backgroundColor = UIColor(named: "White")
         
         collection.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: ProgressCollectionViewCell.identifier)
         collection.register(HabitCollectionViewCell.self, forCellWithReuseIdentifier: HabitCollectionViewCell.identifier)
@@ -27,9 +28,7 @@ class HabitsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.backgroundColor = .init(named: "White")
-        view.backgroundColor = .lightGray
-        setNavigationBar()
+            setNavigationBar()
         layout()
     }
     
@@ -60,23 +59,28 @@ class HabitsViewController: UIViewController {
 //MARK: Extensions
 extension HabitsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return store.habits.count
     }
     
+   
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell1 = collectionView.dequeueReusableCell(withReuseIdentifier: ProgressCollectionViewCell.identifier, for: indexPath) as! ProgressCollectionViewCell
         let cell2 = collectionView.dequeueReusableCell(withReuseIdentifier: HabitCollectionViewCell.identifier, for: indexPath)
         
+        
         if indexPath.item == 0 {
-            return cell1
+            cellLayout(cell: cell1)
+            
+           return cell1
         } else {
+            cellLayout(cell: cell2)
             return cell2
         }
         
     }
     
-    
 }
+
 extension HabitsViewController: UICollectionViewDelegateFlowLayout {
     
     private var constraint: CGFloat {
@@ -88,15 +92,24 @@ extension HabitsViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width - constraint * 2
-        
-        return CGSize(width: width, height: 100)
+        if indexPath.item == 0 {
+           return CGSize(width: width, height: 65)
+        } else {
+            return CGSize(width: width, height: 140)
+        }
+
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-      
-        10
+      constraint
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        100
+      constraint
     }
+    private func cellLayout(cell: UICollectionViewCell) {
+        cell.layer.cornerRadius = 10
+        cell.backgroundColor = .white
+    
+    }
+
 }

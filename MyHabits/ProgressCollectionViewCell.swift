@@ -12,11 +12,13 @@ class ProgressCollectionViewCell: UICollectionViewCell {
     private let progressToday = HabitsStore.shared.todayProgress
     
     private lazy var progressView: UIProgressView = {
-        let progress = UIProgressView(progressViewStyle: .default)
+        let progress = UIProgressView(progressViewStyle: .bar)
         progress.translatesAutoresizingMaskIntoConstraints = false
+        progress.clipsToBounds = true
+        progress.layer.cornerRadius = 3
         progress.progressTintColor = UIColor(named: "Violet")
         progress.progress = progressToday
-        progress.setProgress(progress.progress, animated: true)
+        progress.setProgress(0.5, animated: true)
         return progress
     }()
     
@@ -40,6 +42,7 @@ class ProgressCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .green
         layout()
     }
     
@@ -59,13 +62,12 @@ class ProgressCollectionViewCell: UICollectionViewCell {
             
             valueLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: constraint),
             valueLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -constraint),
-            valueLabel.heightAnchor.constraint(equalTo: heightAnchor),
+            valueLabel.heightAnchor.constraint(equalToConstant: height),
             
             progressView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: constraint),
-            progressView.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: constraint),
+            progressView.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: constraint / 2),
             progressView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -constraint),
             progressView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -constraint)
-        
         ])
     
     }
