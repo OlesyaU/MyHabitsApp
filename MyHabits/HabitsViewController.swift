@@ -9,7 +9,9 @@ import UIKit
 
 class HabitsViewController: UIViewController {
     private var store = HabitsStore.shared.habits
-    
+    private let habitVC = HabitViewController()
+    private let habitDetailsVC = HabitDetailsViewController()
+
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -31,6 +33,10 @@ class HabitsViewController: UIViewController {
             setNavigationBar()
         layout()
     }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        collectionView.reloadData()
+//    }
     
     private func layout() {
         view.addSubview(collectionView)
@@ -50,9 +56,11 @@ class HabitsViewController: UIViewController {
     }
     
     @objc private func addHibitButtonPushed(){
-        let nextVC = UINavigationController(rootViewController: HabitViewController())
+        let nextVC = UINavigationController(rootViewController: habitVC)
         nextVC.modalPresentationStyle = .fullScreen
         navigationController?.present(nextVC, animated: true)
+        habitVC.title = "Создать"
+        
         print("pushed button - addHibitButtonPushed")
     }
 }
@@ -77,6 +85,19 @@ extension HabitsViewController: UICollectionViewDataSource {
             return cell2
         }
         }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let habit = store[indexPath.item]
+//        let habitVC = HabitViewController()
+//        let nextVC = UINavigationController(rootViewController: habitVC)
+//        nextVC.modalPresentationStyle = .fullScreen
+//        navigationController?.present(nextVC, animated: true, completion: {
+//            habitVC.setUIForChosenHabit(habit: habit)
+//
+//})
+        navigationController?.pushViewController(habitDetailsVC, animated: true)
+        
+    }
     
 }
 

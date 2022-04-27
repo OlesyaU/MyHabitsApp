@@ -33,10 +33,6 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppIcon-120px-60pt" translatesAutoresizingMaskIntoConstraints="NO" id="Bd1-Na-WWh">
                                 <rect key="frame" x="177" y="423" width="60" height="60"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="checkmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Vxn-fD-sqU">
-                                <rect key="frame" x="146" y="196" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -55,6 +51,5 @@
     </scenes>
     <resources>
         <image name="AppIcon-120px-60pt" width="60" height="60"/>
-        <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
     </resources>
 </document>

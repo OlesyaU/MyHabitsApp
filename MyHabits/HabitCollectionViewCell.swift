@@ -9,7 +9,7 @@ import UIKit
 
 class HabitCollectionViewCell: UICollectionViewCell {
     
-    let store = HabitsStore.shared.habits
+    let store = HabitsStore.shared
    
 
   private lazy var nameHabitLabel: UILabel = {
@@ -21,14 +21,14 @@ class HabitCollectionViewCell: UICollectionViewCell {
       label.sizeToFit()
         return label
     }()
-
     
-      private let imageView: UIImageView = {
+ private let imageView: UIImageView = {
             let imageView = UIImageView()
             imageView.translatesAutoresizingMaskIntoConstraints = false
 
             return imageView
         }()
+    
     private lazy var strideLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -37,6 +37,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
         label.text = "Каждый день в "
         return label
     }()
+    
     private let counterLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -55,6 +56,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     private func layout() {
         [nameHabitLabel, strideLabel, counterLabel, imageView].forEach({contentView.addSubview($0)})
         let constraint: CGFloat = 16
@@ -78,8 +80,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
             imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             imageView.heightAnchor.constraint(equalToConstant: height * 2),
             imageView.widthAnchor.constraint(equalToConstant: height * 2), imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -constraint)
-        
-        ])
+       ])
    }
     
     func configure(habit: Habit) {
@@ -88,11 +89,11 @@ class HabitCollectionViewCell: UICollectionViewCell {
         strideLabel.text = habit.dateString
         counterLabel.text = "Счетчик: \(habit.trackDates.count)"
         imageView.tintColor = habit.color
-        if habit.isAlreadyTakenToday {
+        if store.habit(habit, isTrackedIn: habit.date) {
             imageView.image = UIImage(systemName: "checkmark.circle.fill")
         } else {
             imageView.image = UIImage(systemName: "circle")
             }
     }
-   
+  
 }

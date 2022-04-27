@@ -22,6 +22,7 @@
 		766CE4B22812C7DC00EB0176 /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 766CE4A928118CD300EB0176 /* SF-Pro-Text-Semibold.otf */; };
 		766CE4B32812C7DE00EB0176 /* SF-Pro-Display-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 766CE4A828118CCB00EB0176 /* SF-Pro-Display-Semibold.otf */; };
 		766CE4B52813EEE800EB0176 /* HabitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766CE4B42813EEE800EB0176 /* HabitViewController.swift */; };
+		76DD233828198FB300BA980D /* HabitDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DD233728198FB300BA980D /* HabitDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		766CE4AD2811941600EB0176 /* HabitsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsViewController.swift; sourceTree = "<group>"; };
 		766CE4AF2811949400EB0176 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		766CE4B42813EEE800EB0176 /* HabitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitViewController.swift; sourceTree = "<group>"; };
+		76DD233728198FB300BA980D /* HabitDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				765728522816A869002CA6AE /* ProgressCollectionViewCell.swift */,
 				765728502816A64E002CA6AE /* HabitCollectionViewCell.swift */,
 				766CE4B42813EEE800EB0176 /* HabitViewController.swift */,
+				76DD233728198FB300BA980D /* HabitDetailsViewController.swift */,
 				766CE480281166BC00EB0176 /* HabitsStore.swift */,
 				766CE482281166FB00EB0176 /* Date+Extension.swift */,
 				766CE473281165ED00EB0176 /* Assets.xcassets */,
@@ -179,6 +182,7 @@
 				766CE4AE2811941600EB0176 /* HabitsViewController.swift in Sources */,
 				765728512816A64F002CA6AE /* HabitCollectionViewCell.swift in Sources */,
 				766CE481281166BC00EB0176 /* HabitsStore.swift in Sources */,
+				76DD233828198FB300BA980D /* HabitDetailsViewController.swift in Sources */,
 				766CE4B52813EEE800EB0176 /* HabitViewController.swift in Sources */,
 				766CE4B02811949400EB0176 /* InfoViewController.swift in Sources */,
 				765728532816A869002CA6AE /* ProgressCollectionViewCell.swift in Sources */,

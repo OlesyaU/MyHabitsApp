@@ -14,6 +14,7 @@ class HabitViewController: UIViewController {
     private var date = Date()
     private lazy var dateString = date.formatted(date: .omitted, time: .shortened)
     private var nameHabit: String = ""
+    private let store = HabitsStore.shared
 //    private var trackDates = [Date]()
 //    private let habit = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
     
@@ -65,11 +66,7 @@ class HabitViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         let text = "Каждый день в \(dateString) "
-        label.font = UIFont(name: "SF Pro Text Regular", size: 17)
-        let attributedText = NSMutableAttributedString(string: text, attributes: [NSAttributedString.Key.font : UIFont(name: "SF Pro Text Regular", size: 17)!])
-        let myRange = NSRange(location: 13, length: 9)
-        attributedText.addAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "Violet")!], range: myRange)
-        label.attributedText = attributedText
+        label.attributedText = String.mutatingString(string: text)
         label.textAlignment = .left
         return label
     }()
@@ -86,7 +83,7 @@ class HabitViewController: UIViewController {
         return datePicker
     }()
     
-    private let deleteLabel: UILabel = {
+    private lazy var deleteLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "SF Pro Text Regular", size: 17)
@@ -94,6 +91,9 @@ class HabitViewController: UIViewController {
         label.text = "Удалить привычку"
         label.textAlignment = .center
         label.isHidden = true
+        label.isUserInteractionEnabled = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(deleteHabitTap))
+        label.addGestureRecognizer(gesture)
         return label
     }()
     
@@ -157,23 +157,32 @@ class HabitViewController: UIViewController {
     
     
     private func setNavigationBar() {
-        title = "Создать"
         navigationController?.navigationBar.tintColor = UIColor(named: "Violet")
         navigationController?.navigationBar.tintColorDidChange()
         navigationItem.rightBarButtonItem = .init(title: "Сохранить", style: .done, target: self, action: #selector(keepButtonTapped))
         navigationItem.leftBarButtonItem = .init(title: "Отменить", style: .plain, target: self, action: #selector(cancelButtonTapped))
         view.backgroundColor = .white
    }
+    func setUIForChosenHabit(habit: Habit){
+        title = "Править"
+        deleteLabel.isHidden = false
+        textField.text = habit.name
+        nameHabit = habit.name
+        colorButton.backgroundColor = habit.color
+        colorHabit = habit.color
+        datePicker.date = habit.date
+        date = habit.date
+        let text = "Каждый день в \(habit.date.formatted(date: .omitted, time: .shortened))  "
+        labelTimeResult.attributedText = String.mutatingString(string: text)
+        
+    }
     
 //    MARK: Actions + Recognizers
     @objc private func chooseDatePickerTime()  {
         date = datePicker.date
         dateString = datePicker.date.formatted(date: .omitted, time: .shortened)
         let text = "Каждый день в \(dateString) "
-        let attributedText = NSMutableAttributedString(string:text, attributes: [NSAttributedString.Key.font : UIFont(name: "SF Pro Text Regular", size: 17)!])
-        let myRange = NSRange(location: 13, length: 9)
-        attributedText.addAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "Violet")!], range: myRange)
-        labelTimeResult.attributedText = attributedText
+        labelTimeResult.attributedText = String.mutatingString(string: text)
         
         print("from chooseDatePickerTime \(date)")
         print("from chooseDatePickerTime\(dateString)")
@@ -181,6 +190,11 @@ class HabitViewController: UIViewController {
    }
     
     @objc private func cancelButtonTapped() {
+        nameHabit = textField.text ?? "."
+        colorHabit = colorButton.backgroundColor ?? .clear
+        date = datePicker.date
+        dateString = date.formatted(date: .omitted, time: .shortened)
+//        store.save()
         dismiss(animated: true)
         print("cancelButtonTapped")
     }
@@ -188,20 +202,70 @@ class HabitViewController: UIViewController {
     @objc private func keepButtonTapped(){
         textField.resignFirstResponder()
         nameHabit = textField.text ?? "text is lost"
-        date = datePicker.date
+ date = datePicker.date
+        colorHabit = colorButton.backgroundColor ?? .clear
         print("keepButtonTapped")
         print("имя привычки -  \(nameHabit)")
         print("Цвет привычки -  \(colorHabit)")
         print("дэйт стринг из кипБаттон\(dateString)")
         print("дата из кипБаттон \(date)")
         let newHabit = Habit(name: nameHabit, date: date, color: colorHabit)
-        let store = HabitsStore.shared
-        store.habits.append(newHabit)
+        
+        
+        if nameHabit == newHabit.name, date == newHabit.date {
+            print(newHabit.name, newHabit.date)
+            print(nameHabit, dateString)
+            nameHabit = textField.text ?? "text is lost"
+            date = datePicker.date
+            colorHabit = colorButton.backgroundColor ?? .clear
+            
+            newHabit.name = textField.text ?? "text is lost"
+            newHabit.date = datePicker.date
+            date = datePicker.date
+            dateString = date.formatted(date: .omitted, time: .shortened)
+            newHabit.color = colorHabit
+            print(newHabit.name, newHabit.date)
+            print(nameHabit, dateString)
+
+//            let sameHabit =  store.habits.first(where: {_ in
+//                nameHabit == newHabit.name
+//            })
+            
+            store.save()
+            print(" ВТОРОЙЙ Принт из сохранить с именем привычки \(nameHabit), \(newHabit.name) цвет  \(colorHabit), \(newHabit.name) время - \(dateString), \(newHabit.dateString)")
+            
+            
+        } else {
+            
+            store.habits.append(newHabit)
+            store.track(newHabit)
+        }
+//        store.save()
         dismiss(animated: true)
+//       let dates =  store.habit(newHabit, isTrackedIn: date)
     }
     
     @objc private func tapToTextField() {
         textField.becomeFirstResponder()
+    }
+    
+    func checkTheHabit() -> Habit{
+        let habit =  Habit(name: nameHabit, date: date, color: colorHabit)
+        if textField.text == habit.name || colorButton.backgroundColor == habit.color || datePicker.date ==  habit.date {
+        }
+        return habit
+        
+    }
+    @objc private func deleteHabitTap() {
+      print("store count 1 - \(store.habits.count)")
+      for (index, value) in store.habits.enumerated() {
+            if nameHabit == value.name, colorButton.backgroundColor == value.color, datePicker.date == value.date{
+                print(value, index)
+                store.habits.remove(at: index)
+            }
+       }
+        dismiss(animated: true)
+       print("store count 2 - \(store.habits.count)")
     }
     
     @objc private func chooseHabitColorButtonTapped() {
@@ -215,8 +279,18 @@ class HabitViewController: UIViewController {
 
 // MARK: Extensions
 extension HabitViewController: UIColorPickerViewControllerDelegate {
+    
     func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
         colorHabit = color
         colorButton.backgroundColor = color
+    }
+}
+
+extension String {
+    static func mutatingString(string: String) -> NSAttributedString {
+        let attributedText = NSMutableAttributedString(string:string, attributes: [NSAttributedString.Key.font : UIFont(name: "SF Pro Text Regular", size: 17)!])
+        let myRange = NSRange(location: 13, length: 9)
+        attributedText.addAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "Violet")!], range: myRange)
+        return attributedText
     }
 }
