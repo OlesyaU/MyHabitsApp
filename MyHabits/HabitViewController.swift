@@ -14,8 +14,8 @@ class HabitViewController: UIViewController {
     private var date = Date()
     private lazy var dateString = date.formatted(date: .omitted, time: .shortened)
     private var nameHabit: String = ""
-    private var trackDates = [Date]()
-    private let habit = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
+//    private var trackDates = [Date]()
+//    private let habit = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
     
 //    MARK: UI - Elements
     private let labelHibitName: UILabel = {
@@ -40,7 +40,6 @@ class HabitViewController: UIViewController {
         textField.keyboardType = .namePhonePad
         textField.addTarget(self, action: #selector(keepButtonTapped), for: .primaryActionTriggered)
         textField.addTarget(self, action: #selector(tapToTextField), for: .touchUpInside)
-//        textField.textContentType = .username
         return textField
     }()
     

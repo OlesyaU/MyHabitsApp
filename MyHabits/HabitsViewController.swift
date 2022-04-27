@@ -8,7 +8,7 @@
 import UIKit
 
 class HabitsViewController: UIViewController {
-    private let store = HabitsStore.shared
+    private var store = HabitsStore.shared.habits
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -59,25 +59,24 @@ class HabitsViewController: UIViewController {
 //MARK: Extensions
 extension HabitsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return store.habits.count
+        return store.count
     }
     
    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell1 = collectionView.dequeueReusableCell(withReuseIdentifier: ProgressCollectionViewCell.identifier, for: indexPath) as! ProgressCollectionViewCell
-        let cell2 = collectionView.dequeueReusableCell(withReuseIdentifier: HabitCollectionViewCell.identifier, for: indexPath)
-        
-        
-        if indexPath.item == 0 {
+        let cell2 = collectionView.dequeueReusableCell(withReuseIdentifier: HabitCollectionViewCell.identifier, for: indexPath) as! HabitCollectionViewCell
+        let habit = store[indexPath.item]
+    if indexPath.item == 0 {
             cellLayout(cell: cell1)
-            
-           return cell1
+            cell1.configure()
+            return cell1
         } else {
+            cell2.configure(habit: habit)
             cellLayout(cell: cell2)
             return cell2
         }
-        
-    }
+        }
     
 }
 
@@ -97,19 +96,19 @@ extension HabitsViewController: UICollectionViewDelegateFlowLayout {
         } else {
             return CGSize(width: width, height: 140)
         }
-
-    }
+}
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
       constraint
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
       constraint
     }
+    
     private func cellLayout(cell: UICollectionViewCell) {
         cell.layer.cornerRadius = 10
         cell.backgroundColor = .white
-    
     }
 
 }

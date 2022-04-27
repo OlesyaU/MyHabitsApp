@@ -9,20 +9,19 @@ import UIKit
 
 class ProgressCollectionViewCell: UICollectionViewCell {
     
-    private let progressToday = HabitsStore.shared.todayProgress
+    private let progressToday: Float  = HabitsStore.shared.todayProgress
     
-    private lazy var progressView: UIProgressView = {
+     private lazy var progressView: UIProgressView = {
         let progress = UIProgressView(progressViewStyle: .bar)
         progress.translatesAutoresizingMaskIntoConstraints = false
         progress.clipsToBounds = true
         progress.layer.cornerRadius = 3
+         progress.trackTintColor = .systemGray2
         progress.progressTintColor = UIColor(named: "Violet")
-        progress.progress = progressToday
-        progress.setProgress(0.5, animated: true)
         return progress
     }()
     
-    private let textLabel: UILabel = {
+    let textLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "SF Pro Text Semibold", size: 13)
@@ -70,5 +69,9 @@ class ProgressCollectionViewCell: UICollectionViewCell {
             progressView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -constraint)
         ])
     
+    }
+    func configure() {
+        progressView.progress = progressToday
+        valueLabel.text = String(Int(Double(progressToday) * 100 )) + "%"
     }
 }

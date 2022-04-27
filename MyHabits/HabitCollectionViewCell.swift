@@ -12,23 +12,23 @@ class HabitCollectionViewCell: UICollectionViewCell {
     let store = HabitsStore.shared.habits
    
 
-   lazy var nameHabitLabel: UILabel = {
+  private lazy var nameHabitLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "SF Pro Text Semibold", size: 17)
         label.textColor = .systemGray
         label.numberOfLines = 2
-        label.text = "Привычка"
+      label.sizeToFit()
         return label
     }()
-   let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "круг")
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
+
+    
+      private let imageView: UIImageView = {
+            let imageView = UIImageView()
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+
+            return imageView
+        }()
     private lazy var strideLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +64,6 @@ class HabitCollectionViewCell: UICollectionViewCell {
             nameHabitLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: constraint),
             nameHabitLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: constraint),
             nameHabitLabel.widthAnchor.constraint(equalToConstant: widthLabel),
-            nameHabitLabel.heightAnchor.constraint(equalToConstant: height),
             
            strideLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: constraint),
             strideLabel.topAnchor.constraint(equalTo: nameHabitLabel.bottomAnchor, constant: constraint / 2),
@@ -82,6 +81,18 @@ class HabitCollectionViewCell: UICollectionViewCell {
         
         ])
    }
-   
     
+    func configure(habit: Habit) {
+        nameHabitLabel.textColor = habit.color
+        nameHabitLabel.text = habit.name
+        strideLabel.text = habit.dateString
+        counterLabel.text = "Счетчик: \(habit.trackDates.count)"
+        imageView.tintColor = habit.color
+        if habit.isAlreadyTakenToday {
+            imageView.image = UIImage(systemName: "checkmark.circle.fill")
+        } else {
+            imageView.image = UIImage(systemName: "circle")
+            }
+    }
+   
 }
