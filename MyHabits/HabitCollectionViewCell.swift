@@ -7,12 +7,19 @@
 
 import UIKit
 
+
+protocol HabitCellDelegate{
+    func track(habit: Habit, index : IndexPath)
+}
+
 class HabitCollectionViewCell: UICollectionViewCell {
     
     let store = HabitsStore.shared
+//    private let delegate: HabitCellDelegate?
+var isTrack = Bool()
+  private var habCel = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
    
-
-  private lazy var nameHabitLabel: UILabel = {
+ private  lazy var nameHabitLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "SF Pro Text Semibold", size: 17)
@@ -22,10 +29,12 @@ class HabitCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
- private let imageView: UIImageView = {
+private lazy var imageView: UIImageView = {
             let imageView = UIImageView()
             imageView.translatesAutoresizingMaskIntoConstraints = false
-
+     imageView.isUserInteractionEnabled = true
+     let gesture = UITapGestureRecognizer(target: self, action: #selector(circleTapped))
+     imageView.addGestureRecognizer(gesture)
             return imageView
         }()
     
@@ -47,10 +56,10 @@ class HabitCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+  
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .yellow
-        layout()
+layout()
     }
     
     required init?(coder: NSCoder) {
@@ -83,17 +92,36 @@ class HabitCollectionViewCell: UICollectionViewCell {
        ])
    }
     
-    func configure(habit: Habit) {
-        nameHabitLabel.textColor = habit.color
-        nameHabitLabel.text = habit.name
-        strideLabel.text = habit.dateString
-        counterLabel.text = "Счетчик: \(habit.trackDates.count)"
-        imageView.tintColor = habit.color
-        if store.habit(habit, isTrackedIn: habit.date) {
+    @objc private  func circleTapped(){
+//        нужно сделать так, чтобы не только менялся знак, но и привычка начинала трекаться
+        if habCel.isAlreadyTakenToday {
+         return
+        } else {
+        isTrack.toggle()
+        if isTrack {
             imageView.image = UIImage(systemName: "checkmark.circle.fill")
+            HabitsStore.shared.track(habCel)
+                    } else {
+            imageView.image = UIImage(systemName: "circle")
+                }
+        }
+    }
+  
+
+    func configure(habit: Habit) {
+        habCel = habit
+            nameHabitLabel.textColor = habit.color
+            nameHabitLabel.text = habit.name
+            strideLabel.text = habit.dateString
+            counterLabel.text = "Счетчик: \(habit.trackDates.count)"
+            imageView.tintColor = habit.color
+        isTrack = habit.isAlreadyTakenToday
+        if habit.isAlreadyTakenToday {
+            imageView.image = UIImage(systemName: "checkmark.circle.fill")
+            
         } else {
             imageView.image = UIImage(systemName: "circle")
-            }
+                }
     }
   
 }

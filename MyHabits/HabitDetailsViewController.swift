@@ -7,10 +7,14 @@
 
 import UIKit
 
- final class HabitDetailsViewController: UIViewController {
-     private let store = HabitsStore.shared
-     
-   
+final class HabitDetailsViewController: UIViewController {
+    private let store = HabitsStore.shared.dates
+//    private var datesCount = Int()
+//    private var dates = [Date]()
+//    private var isTrack = Bool()
+//    private var name = String()
+    var habitDVC = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -21,53 +25,78 @@ import UIKit
         
     }()
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-      setNavBar()
+        setNavBar()
         layout()
-//        navigationItem.rightBarButtonItem?.title = "Править"
     }
     
-     private func setNavBar() {
-      navigationItem.rightBarButtonItem = .init(title: "Править", style: .plain, target: self, action: #selector(changeHabitButtonTapped))
-       
-         navigationController?.navigationBar.tintColor = UIColor(named: "Violet")
-         navigationController?.navigationBar.tintColorDidChange()
-//         navigationItem.rightBarButtonItem = .init(title: "Сохранить", style: .done, target: self, action: #selector(keepButtonTapped))
-//         navigationItem.leftBarButtonItem = .init(title: "Отменить", style: .plain, target: self, action: #selector(cancelButtonTapped))
-         view.backgroundColor = .white
-     }
-     
-     private func layout() {
-         view.addSubview(tableView)
-
-         NSLayoutConstraint.activate([
+    private func setNavBar() {
+        navigationItem.rightBarButtonItem = .init(title: "Править", style: .plain, target: self, action: #selector(changeHabitButtonTapped))
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.tintColor = UIColor(named: "Violet")
+        navigationController?.navigationBar.tintColorDidChange()
+        view.backgroundColor = .white
+    }
+    
+    private func layout() {
+        view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-         ])
-     }
-     
-     @objc private func changeHabitButtonTapped() {
-         navigationController?.pushViewController(HabitViewController(), animated: true)
-     }
-     
+        ])
+    }
+    
+    @objc private func changeHabitButtonTapped() {
+        let habitVC = HabitViewController()
+        let nextVC = UINavigationController(rootViewController: habitVC)
+//        nextVC.modalPresentationStyle = .fullScreen
+//        navigationController?.present(nextVC, animated: true, completion: {
+//            habitVC.setUIForChosenHabit(habit: self.habitDVC)
+//
+//        }) нам надо его пушить и переписать все методы
+        navigationController?.pushViewController(habitVC, animated: true)
+        habitVC.setUIForChosenHabit(habit: habitDVC)
+    }
+    func configure(habit: Habit) {
+        habitDVC = habit
+        tableView.reloadData()
+    }
+    
 }
 extension HabitDetailsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        вот тут надо взять конкретную привычку и ее затреканные даты
-        return 7
+        return store.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.identifier, for: indexPath)
-        cell.textLabel?.text = String(indexPath.row)
-     
-//        тут надо взять привычку и ее даты и их поместить в лейбл...если привычка была затрекана сегодня - надо поставить чекмарку на эту ячейку
-        cell.accessoryType = .checkmark
+let relativeDateFormatter = RelativeDateTimeFormatter()
+        let date = HabitsStore.shared.dates[indexPath.row]
+        relativeDateFormatter.calendar = .current
+        relativeDateFormatter.dateTimeStyle = .named
+        if Calendar.current.isDateInToday(date) {
+            cell.textLabel?.text = "Сегодня"
+        } else if  Calendar.current.isDateInYesterday(date) {
+            cell.textLabel?.text = "Вчера"
+} else {
+    
+            cell.textLabel?.text = date.formatted(date: .long, time: .omitted)
+        }
+//        вот тут я ставила чекмарку если она затрекана сегодня
+//        if habitDVC.isAlreadyTakenToday {
+//            cell.accessoryType = .checkmark
+//        }
+        
+        let isTrackkk = HabitsStore.shared.habit(habitDVC, isTrackedIn: date)
+        if isTrackkk {
+            cell.accessoryType = .checkmark
+        }
+        
         cell.tintColor = UIColor.init(named: "Violet")
         return cell
     }
@@ -77,7 +106,6 @@ extension HabitDetailsViewController: UITableViewDataSource {
 
 extension HabitDetailsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        let str = NSAttributedString(string: "АКТИВНОСТЬ", attributes: [NSAttributedString.Key.font : UIFont(name: "SF Pro Text Regular", size: 17)!])
         return "АКТИВНОСТЬ"
     }
 }

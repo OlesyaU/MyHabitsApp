@@ -15,10 +15,11 @@ class HabitViewController: UIViewController {
     private lazy var dateString = date.formatted(date: .omitted, time: .shortened)
     private var nameHabit: String = ""
     private let store = HabitsStore.shared
-//    private var trackDates = [Date]()
-//    private let habit = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
+    private var isTrack = Bool()
+    //    private var trackDates = [Date]()
+    var habit = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
     
-//    MARK: UI - Elements
+    //    MARK: UI - Elements
     private let labelHibitName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -101,19 +102,25 @@ class HabitViewController: UIViewController {
         let button = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 100)))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = CGFloat(buttonHeight / 2)
-        button.backgroundColor = .cyan
+        button.backgroundColor = .systemGray2
         button.addTarget(self, action: #selector(chooseHabitColorButtonTapped), for: .touchUpInside)
         return button
     }()
     
-//    MARK: Lifecycle
+    //    MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
         layout()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNavigationBar()
+//        clear()
+      
+    }
     
-//  MARK: Constraints, settings UI
+    //  MARK: Constraints, settings UI
     private func layout() {
         let leadingConstraint: CGFloat = 8
         let topConstraint: CGFloat = 16
@@ -162,7 +169,8 @@ class HabitViewController: UIViewController {
         navigationItem.rightBarButtonItem = .init(title: "Сохранить", style: .done, target: self, action: #selector(keepButtonTapped))
         navigationItem.leftBarButtonItem = .init(title: "Отменить", style: .plain, target: self, action: #selector(cancelButtonTapped))
         view.backgroundColor = .white
-   }
+    }
+    
     func setUIForChosenHabit(habit: Habit){
         title = "Править"
         deleteLabel.isHidden = false
@@ -177,32 +185,39 @@ class HabitViewController: UIViewController {
         
     }
     
-//    MARK: Actions + Recognizers
+    //    MARK: Actions + Recognizers
     @objc private func chooseDatePickerTime()  {
         date = datePicker.date
         dateString = datePicker.date.formatted(date: .omitted, time: .shortened)
         let text = "Каждый день в \(dateString) "
         labelTimeResult.attributedText = String.mutatingString(string: text)
         
-        print("from chooseDatePickerTime \(date)")
-        print("from chooseDatePickerTime\(dateString)")
-        print("chooseDatePickerTime")
-   }
+//        print("from chooseDatePickerTime \(date)")
+//        print("from chooseDatePickerTime\(dateString)")
+//        print("chooseDatePickerTime")
+    }
+    
+    private func clear() {
+        textField.text = ""
+        let dateNow = Date.now
+        datePicker.date = dateNow
+        chooseDatePickerTime()
+        colorButton.backgroundColor = .systemGray2
+       
+//        цвет я тут специально не сбрасываю, чтобы можно было видеть, что элемент на  месте
+       }
     
     @objc private func cancelButtonTapped() {
-        nameHabit = textField.text ?? "."
-        colorHabit = colorButton.backgroundColor ?? .clear
-        date = datePicker.date
-        dateString = date.formatted(date: .omitted, time: .shortened)
-//        store.save()
+        clear()
         dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
         print("cancelButtonTapped")
     }
     
     @objc private func keepButtonTapped(){
         textField.resignFirstResponder()
         nameHabit = textField.text ?? "text is lost"
- date = datePicker.date
+        date = datePicker.date
         colorHabit = colorButton.backgroundColor ?? .clear
         print("keepButtonTapped")
         print("имя привычки -  \(nameHabit)")
@@ -210,62 +225,45 @@ class HabitViewController: UIViewController {
         print("дэйт стринг из кипБаттон\(dateString)")
         print("дата из кипБаттон \(date)")
         let newHabit = Habit(name: nameHabit, date: date, color: colorHabit)
-        
-        
-        if nameHabit == newHabit.name, date == newHabit.date {
-            print(newHabit.name, newHabit.date)
-            print(nameHabit, dateString)
-            nameHabit = textField.text ?? "text is lost"
-            date = datePicker.date
-            colorHabit = colorButton.backgroundColor ?? .clear
-            
-            newHabit.name = textField.text ?? "text is lost"
-            newHabit.date = datePicker.date
-            date = datePicker.date
-            dateString = date.formatted(date: .omitted, time: .shortened)
-            newHabit.color = colorHabit
-            print(newHabit.name, newHabit.date)
-            print(nameHabit, dateString)
-
-//            let sameHabit =  store.habits.first(where: {_ in
-//                nameHabit == newHabit.name
-//            })
-            
-            store.save()
-            print(" ВТОРОЙЙ Принт из сохранить с именем привычки \(nameHabit), \(newHabit.name) цвет  \(colorHabit), \(newHabit.name) время - \(dateString), \(newHabit.dateString)")
-            
-            
-        } else {
-            
-            store.habits.append(newHabit)
+        print(newHabit.isAlreadyTakenToday)
+        if !newHabit.isAlreadyTakenToday , datePicker.date <= Date.now {
             store.track(newHabit)
+            print(newHabit.isAlreadyTakenToday)
         }
-//        store.save()
+        store.habits.append(newHabit)
+        store.save()
         dismiss(animated: true)
-//       let dates =  store.habit(newHabit, isTrackedIn: date)
     }
     
     @objc private func tapToTextField() {
         textField.becomeFirstResponder()
     }
     
-    func checkTheHabit() -> Habit{
-        let habit =  Habit(name: nameHabit, date: date, color: colorHabit)
-        if textField.text == habit.name || colorButton.backgroundColor == habit.color || datePicker.date ==  habit.date {
-        }
-        return habit
-        
-    }
     @objc private func deleteHabitTap() {
-      print("store count 1 - \(store.habits.count)")
-      for (index, value) in store.habits.enumerated() {
-            if nameHabit == value.name, colorButton.backgroundColor == value.color, datePicker.date == value.date{
-                print(value, index)
-                store.habits.remove(at: index)
+        print("store count 1 - \(store.habits.count)")
+        
+            let alert = UIAlertController(title: "Удалить привычку", message: "Вы хотите удалить привычку \"\(nameHabit)\"", preferredStyle: .alert)
+            let action1 = UIAlertAction(title: "Отменить", style: .default) { _ in
+            self.dismiss(animated: true)
+        }
+            
+        let action2 = UIAlertAction(title: "Удалить", style: .destructive) { _ in
+             for (index, value) in self.store.habits.enumerated() {
+          if self.nameHabit == value.name, self.colorButton.backgroundColor == value.color, self.datePicker.date == value.date{
+                print(value.name, index)
+              
+              self.store.habits.remove(at: index)
+              }
+                        self.navigationController?.popToRootViewController(animated: true)
+            
+                print("store count 2 - \(self.store.habits.count)")
+                    
             }
-       }
-        dismiss(animated: true)
-       print("store count 2 - \(store.habits.count)")
+        }
+        alert.addAction(action1)
+        alert.addAction(action2)
+        self.present(alert, animated: true)
+        
     }
     
     @objc private func chooseHabitColorButtonTapped() {
