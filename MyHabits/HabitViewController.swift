@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HabitViewController: UIViewController {
+final class HabitViewController: UIViewController {
     
     private let buttonHeight: CGFloat = 30
     private var colorHabit = UIColor()
@@ -16,11 +16,11 @@ class HabitViewController: UIViewController {
     private var nameHabit: String = ""
     private let store = HabitsStore.shared
     private var isTrack = Bool()
-    var habitHVC = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
+    var habitHVC = Habit(name: String(), date: Date(), color: UIColor())
     var correctName = String()
     var correctColor = UIColor()
     var correctDate = Date()
-    let habitsVC = HabitsViewController()
+    
     //    MARK: UI - Elements
     private let labelHibitName: UILabel = {
         let label = UILabel()
@@ -118,7 +118,7 @@ class HabitViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavigationBar()
-   }
+    }
     
     //  MARK: Constraints, settings UI
     private func layout() {
@@ -185,8 +185,8 @@ class HabitViewController: UIViewController {
         date = habit.date
         let text = "Каждый день в \(habit.date.formatted(date: .omitted, time: .shortened))  "
         labelTimeResult.attributedText = String.mutatingString(string: text)
-    
-   }
+        
+    }
     
     //    MARK: Actions + Recognizers
     @objc private func chooseDatePickerTime()  {
@@ -194,10 +194,6 @@ class HabitViewController: UIViewController {
         dateString = datePicker.date.formatted(date: .omitted, time: .shortened)
         let text = "Каждый день в \(dateString) "
         labelTimeResult.attributedText = String.mutatingString(string: text)
-        
-//        print("from chooseDatePickerTime \(date)")
-//        print("from chooseDatePickerTime\(dateString)")
-//        print("chooseDatePickerTime")
     }
     
     func clear() {
@@ -207,8 +203,8 @@ class HabitViewController: UIViewController {
         chooseDatePickerTime()
         colorButton.backgroundColor = .systemGray2
         deleteLabel.isHidden = true
-       //        цвет я тут специально не сбрасываю, чтобы можно было видеть, что элемент на  месте
-       }
+        //        цвет я тут специально не сбрасываю, чтобы можно было видеть, что элемент на  месте
+    }
     
     @objc private func cancelButtonTapped() {
         clear()
@@ -220,61 +216,55 @@ class HabitViewController: UIViewController {
     @objc private func keepButtonTapped(){
         textField.resignFirstResponder()
         if deleteLabel.isHidden {
-        nameHabit = textField.text ?? "text is lost"
-        date = datePicker.date
-        colorHabit = colorButton.backgroundColor ?? .clear
-        print("keepButtonTapped")
-        print("имя привычки  свойство nameHabit -  \(nameHabit)")
-        print("Цвет привычки  свойство colorHabit -  \(colorHabit)")
-        print("дэйт стринг из свойство кипБаттон\(dateString)")
-        print("дата из  свойство кипБаттон \(date)")
+            
+            nameHabit = textField.text ?? "text is lost"
+            date = datePicker.date
+            colorHabit = colorButton.backgroundColor ?? .clear
+            
             habitHVC = Habit(name: nameHabit, date: date, color: colorHabit)
-            print(habitHVC.isAlreadyTakenToday)
-        if !habitHVC.isAlreadyTakenToday , datePicker.date <= Date.now {
-            store.track(habitHVC)
-            print(habitHVC.isAlreadyTakenToday)
-            print("имя привычки habit global  -  \(habitHVC.name)")
-            print("Цвет привычки  habit global -  \(habitHVC.color)")
-        }
             
+            if !habitHVC.isAlreadyTakenToday , datePicker.date <= Date.now {
+                store.track(habitHVC)
+                
+            }
             store.habits.append(habitHVC)
-            
-        } else if deleteLabel.isHidden == false, store.habits.contains(where: { hab  in
-            hab.name = nameHabit
-            hab.color = colorHabit
-            hab.date = date
-            return true
-        }) {
+        }
+        
+        if deleteLabel.isHidden == false {
+            print(correctName, nameHabit)
             correctName = textField.text ?? "text is lost"
-                        correctDate = datePicker.date
-                        correctColor = colorButton.backgroundColor ?? .clear
+            correctDate = datePicker.date
+            correctColor = colorButton.backgroundColor ?? .clear
             
-            
-            print(habitHVC.self)
-//            let correct = Habit(name: correctName, date: correctDate, color: correctColor)
-          var element =  store.habits.first(where: {
+            var correct = Habit(name: correctName, date: correctDate, color: correctColor)
+            var element =  store.habits.first(where: {
                 $0.name = nameHabit
                 $0.color = colorHabit
                 $0.date = date
                 return true
-          })
-            element?.name = correctName
-            element?.color = correctColor
-            element?.date = correctDate
-            
-            nameHabit = correctName
-            colorHabit = correctColor
-            date = correctDate
-            
-            habitHVC.name = correctName
-            habitHVC.color = correctColor
-            habitHVC.date = correctDate
-            element = habitHVC
-  
+            })
+            //                        element?.name = correctName
+            //                        element?.color = correctColor
+            //                        element?.date = correctDate
+            correct = Habit(name: correctName, date: correctDate, color: correctColor)
+            //            nameHabit = correctName
+            //            colorHabit = correctColor
+            //            date = correctDate
+            //            print(correctName, nameHabit)
+            //
+            //
+            element = correct
+            print(correct.name, nameHabit, element?.name)
             store.save()
-   }
- dismiss(animated: true)
-      navigationController?.popToRootViewController(animated: true)
+            for i in store.habits {
+                
+                print(i.name)
+            }
+            
+        }
+        
+        dismiss(animated: true)
+        navigationController?.popToRootViewController(animated: true)
     }
     
     @objc private func tapToTextField() {
@@ -284,19 +274,19 @@ class HabitViewController: UIViewController {
     @objc private func deleteHabitTap() {
         print("store count 1 - \(store.habits.count)")
         
-            let alert = UIAlertController(title: "Удалить привычку", message: "Вы хотите удалить привычку \"\(nameHabit)\"", preferredStyle: .alert)
-            let action1 = UIAlertAction(title: "Отменить", style: .default) { _ in
+        let alert = UIAlertController(title: "Удалить привычку", message: "Вы хотите удалить привычку \"\(nameHabit)\"", preferredStyle: .alert)
+        let action1 = UIAlertAction(title: "Отменить", style: .default) { _ in
             self.dismiss(animated: true)
         }
-            
+        
         let action2 = UIAlertAction(title: "Удалить", style: .destructive) { _ in
-             for (index, value) in self.store.habits.enumerated() {
-          if self.nameHabit == value.name, self.colorButton.backgroundColor == value.color, self.datePicker.date == value.date{
-                print(value.name, index)
-             self.store.habits.remove(at: index)
-              }
-                 self.navigationController?.popToRootViewController(animated: true)
-            
+            for (index, value) in self.store.habits.enumerated() {
+                if self.nameHabit == value.name, self.colorButton.backgroundColor == value.color, self.datePicker.date == value.date{
+                    print(value.name, index)
+                    self.store.habits.remove(at: index)
+                }
+                self.navigationController?.popToRootViewController(animated: true)
+                
                 print("store count 2 - \(self.store.habits.count)")
             }
         }
@@ -304,7 +294,7 @@ class HabitViewController: UIViewController {
         alert.addAction(action1)
         alert.addAction(action2)
         self.present(alert, animated: true)
-   }
+    }
     
     @objc private func chooseHabitColorButtonTapped() {
         let colorpicker = UIColorPickerViewController()

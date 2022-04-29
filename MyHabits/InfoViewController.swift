@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InfoViewController: UIViewController {
+final class InfoViewController: UIViewController {
     
     private let textView: UITextView = {
         let textView = UITextView()
@@ -59,5 +59,5 @@ class InfoViewController: UIViewController {
             textView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
-   
+    
 }

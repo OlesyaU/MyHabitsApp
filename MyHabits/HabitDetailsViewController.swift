@@ -8,12 +8,8 @@
 import UIKit
 
 final class HabitDetailsViewController: UIViewController {
-    private let store = HabitsStore.shared.dates
-    //    private var datesCount = Int()
-    //    private var dates = [Date]()
-    //    private var isTrack = Bool()
-    //    private var name = String()
-    var habitDVC = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
+    private let store = HabitsStore.shared
+    private var habitDVC = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -22,9 +18,7 @@ final class HabitDetailsViewController: UIViewController {
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.identifier)
         return tableView
-        
     }()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +47,6 @@ final class HabitDetailsViewController: UIViewController {
     
     @objc private func changeHabitButtonTapped() {
         let habitVC = HabitViewController()
-//        let nextVC = UINavigationController(rootViewController: habitVC)
         navigationController?.pushViewController(habitVC, animated: true)
         habitVC.setUIForChosenHabit(habit: habitDVC)
     }
@@ -66,7 +59,7 @@ final class HabitDetailsViewController: UIViewController {
 
 extension HabitDetailsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return store.count
+        return store.dates.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
