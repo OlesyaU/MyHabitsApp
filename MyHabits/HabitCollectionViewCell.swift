@@ -8,14 +8,9 @@
 import UIKit
 
 
-protocol HabitCellDelegate{
-    func track(habit: Habit, index : IndexPath)
-}
-
 class HabitCollectionViewCell: UICollectionViewCell {
     
     let store = HabitsStore.shared
-//    private let delegate: HabitCellDelegate?
 var isTrack = Bool()
   private var habCel = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
    
@@ -93,7 +88,7 @@ layout()
    }
     
     @objc private  func circleTapped(){
-//        нужно сделать так, чтобы не только менялся знак, но и привычка начинала трекаться
+
         if habCel.isAlreadyTakenToday {
          return
         } else {
@@ -101,6 +96,8 @@ layout()
         if isTrack {
             imageView.image = UIImage(systemName: "checkmark.circle.fill")
             HabitsStore.shared.track(habCel)
+            HabitsStore.shared.save()
+            counterLabel.text = "Счётчик : \(habCel.trackDates.count)"
                     } else {
             imageView.image = UIImage(systemName: "circle")
                 }
