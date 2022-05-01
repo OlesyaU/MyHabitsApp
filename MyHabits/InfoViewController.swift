@@ -9,6 +9,8 @@ import UIKit
 
 final class InfoViewController: UIViewController {
     
+    //    MARK: Properties and objects
+    
     private let textView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -42,12 +44,16 @@ final class InfoViewController: UIViewController {
         return textView
     }()
     
+    //   MARK: Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationItem.title = "Информация"
         layout()
     }
+    
+    //    MARK: Layout
     
     private func layout() {
         view.addSubview(textView)

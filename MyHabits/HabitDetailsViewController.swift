@@ -8,8 +8,11 @@
 import UIKit
 
 final class HabitDetailsViewController: UIViewController {
+    
+    //    MARK: Properties and objects
+    
     private let store = HabitsStore.shared
-    private var habitDVC = Habit(name: String(), date: Date(), trackDates: [Date](), color: UIColor())
+    private var habit = Habit.makeInitial()
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -20,10 +23,19 @@ final class HabitDetailsViewController: UIViewController {
         return tableView
     }()
     
+    //    MARK: Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavBar()
         layout()
+    }
+    
+    //  MARK: Layout, configure
+    
+    func configure(habit: Habit) {
+        self.habit = habit
+        tableView.reloadData()
     }
     
     private func setNavBar() {
@@ -32,7 +44,7 @@ final class HabitDetailsViewController: UIViewController {
         navigationController?.navigationBar.tintColor = UIColor(named: "Violet")
         navigationController?.navigationBar.tintColorDidChange()
         view.backgroundColor = .white
-    }
+        }
     
     private func layout() {
         view.addSubview(tableView)
@@ -45,17 +57,14 @@ final class HabitDetailsViewController: UIViewController {
         ])
     }
     
+    //    MARK: Actions, Gestures
     @objc private func changeHabitButtonTapped() {
-        let habitVC = HabitViewController()
+        let habitVC = HabitViewController(state: .edit, habit: habit)
         navigationController?.pushViewController(habitVC, animated: true)
-        habitVC.setUIForChosenHabit(habit: habitDVC)
-    }
-    
-    func configure(habit: Habit) {
-        habitDVC = habit
-        tableView.reloadData()
     }
 }
+
+// MARK: Extensions
 
 extension HabitDetailsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -64,23 +73,16 @@ extension HabitDetailsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.identifier, for: indexPath)
-        let relativeDateFormatter = RelativeDateTimeFormatter()
         let date = HabitsStore.shared.dates[indexPath.row]
-        relativeDateFormatter.calendar = .current
-        relativeDateFormatter.dateTimeStyle = .named
-        if Calendar.current.isDateInToday(date) {
-            cell.textLabel?.text = "Сегодня"
-        } else if  Calendar.current.isDateInYesterday(date) {
-            cell.textLabel?.text = "Вчера"
-        } else {
-            cell.textLabel?.text = date.formatted(date: .long, time: .omitted)
+        cell.textLabel?.text = date.humanFormat()
+        let isTrack = HabitsStore.shared.habit(habit, isTrackedIn: date)
+        switch isTrack {
+            case true:
+                cell.accessoryType = .checkmark
+
+            case false:
+                cell.accessoryType = .none
         }
-        
-        let isTrack = HabitsStore.shared.habit(habitDVC, isTrackedIn: date)
-        if isTrack {
-            cell.accessoryType = .checkmark
-        }
-        
         cell.tintColor = UIColor.init(named: "Violet")
         return cell
     }
@@ -94,3 +96,4 @@ extension HabitDetailsViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
+

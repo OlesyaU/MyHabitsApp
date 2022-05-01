@@ -13,7 +13,7 @@ extension Date {
     static func dates(from fromDate: Date, to toDate: Date) -> [Date] {
         var dates: [Date] = []
         var date = fromDate
-
+        
         while date <= toDate {
             dates.append(date)
             guard let newDate = Calendar.current.date(byAdding: .day, value: 1, to: date) else {
@@ -22,6 +22,16 @@ extension Date {
             date = newDate
         }
         return dates
+    }
+    
+    func humanFormat() -> String {
+        if Calendar.current.isDateInToday(self) {
+            return "Сегодня"
+        } else if Calendar.current.isDateInYesterday(self) {
+            return "Вчера"
+        } else {
+            return formatted(date: .long, time: .omitted)
+        }
     }
 }
 
