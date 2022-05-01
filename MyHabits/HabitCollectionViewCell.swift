@@ -109,7 +109,7 @@ final class HabitCollectionViewCell: UICollectionViewCell {
             imageView.widthAnchor.constraint(equalToConstant: Layout.height * 2), imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Layout.basicInset)
         ])
     }
- 
+    
     //    MARK: Actions, Gestures
     
     @objc private  func circleTapped(){

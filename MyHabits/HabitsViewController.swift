@@ -71,16 +71,16 @@ final class HabitsViewController: UIViewController {
         navigationItem.title = "Сегодня"
     }
     
-// MARK: - Actions, Gestures
+    // MARK: - Actions, Gestures
     
     @objc private func addHibitButtonPushed(){
-        habitViewController = HabitViewController(state: .new)
+        habitViewController = HabitViewController(state: .new, habit: Habit.makeInitial())
         habitViewController?.delegate = self
-        guard let habitVC = habitViewController else {return}
+        guard let habitVC = habitViewController else { return }
         let nextVC = UINavigationController(rootViewController: habitVC)
         nextVC.modalPresentationStyle = .fullScreen
         navigationController?.present(nextVC, animated: true)
-   }
+    }
 }
 
 //MARK: - Extensions
@@ -91,9 +91,9 @@ extension HabitsViewController: UICollectionViewDataSource {
         guard let sectionType = SectionType(section: section) else { return .zero }
         switch sectionType {
             case .progress:
-             return   1
+                return   1
             case .habit:
-            return  store.habits.count
+                return  store.habits.count
         }
     }
     
@@ -102,7 +102,7 @@ extension HabitsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let sectionType = SectionType(section: indexPath.section) else {return .init()}
+        guard let sectionType = SectionType(section: indexPath.section) else { return .init() }
         switch sectionType {
             case .progress:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProgressCollectionViewCell.identifier, for: indexPath) as! ProgressCollectionViewCell
@@ -113,26 +113,23 @@ extension HabitsViewController: UICollectionViewDataSource {
                 let habit = store.habits[indexPath.item]
                 cell.configure(habit: habit)
                 return cell
-       }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let habit = store.habits[indexPath.item]
- navigationController?.pushViewController(habitDetailsViewController, animated: true)
-            habitDetailsViewController.title = habit.name
-            habitDetailsViewController.configure(habit: habit)
+        navigationController?.pushViewController(habitDetailsViewController, animated: true)
+        habitDetailsViewController.title = habit.name
+        habitDetailsViewController.configure(habit: habit)
     }
 }
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension HabitsViewController: UICollectionViewDelegateFlowLayout {
-    private var constraint: CGFloat {
-        return 16
-    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: constraint, left: constraint, bottom: constraint, right: constraint)
+        return Layout.sectionEdgeInset
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -170,7 +167,7 @@ extension HabitsViewController {
         )
     }
 }
- 
+
 // MARK: - HabitViewControllerDelegate
 
 extension HabitsViewController: HabitViewControllerDelegate {

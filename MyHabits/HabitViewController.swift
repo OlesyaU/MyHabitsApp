@@ -14,6 +14,7 @@ protocol HabitViewControllerDelegate: AnyObject {
 final class HabitViewController: UIViewController {
     
     //    MARK: Properties and objects
+    
     weak var delegate: HabitViewControllerDelegate?
     enum State {
         case new
@@ -24,7 +25,7 @@ final class HabitViewController: UIViewController {
             updateState()
         }
     }
-    private var habit: Habit?
+    private var habit = Habit.makeInitial()
     private let buttonHeight: CGFloat = 30
     private var colorHabit = UIColor()
     private var date = Date()
@@ -56,8 +57,10 @@ final class HabitViewController: UIViewController {
         textField.returnKeyType = .done
         textField.autocorrectionType = .no
         textField.keyboardType = .namePhonePad
+        textField.delegate = self
         textField.addTarget(self, action: #selector(keepButtonTapped), for: .primaryActionTriggered)
         textField.addTarget(self, action: #selector(tapToTextField), for: .touchUpInside)
+      
         return textField
     }()
     
@@ -125,7 +128,7 @@ final class HabitViewController: UIViewController {
     
     //    MARK: Lifecycle
     
-    init(state: State, habit: Habit? = nil) {
+    init(state: State, habit: Habit) {
         self.currentState = state
         self.habit = habit
         super .init(nibName: nil, bundle: nil)
@@ -211,7 +214,6 @@ final class HabitViewController: UIViewController {
             case .edit:
                 title = "Править"
                 deleteLabel.isHidden = false
-                guard let habit = habit else { return }
                 textField.text = habit.name
                 nameHabit = habit.name
                 colorButton.backgroundColor = habit.color
@@ -240,15 +242,13 @@ final class HabitViewController: UIViewController {
     
     @objc private func keepButtonTapped(){
         textField.resignFirstResponder()
-        guard let index = store.habits.firstIndex(where: { $0 == habit }) else { return }
-        guard var habit = habit else {return}
         if textField.text == "" {
             let aleart = UIAlertController(title: "Отсутствует название привычки", message: "Введите его в текстовое поле ", preferredStyle: .alert)
             let action = UIAlertAction(title: "Точно!", style: .default)
             aleart.addAction(action)
             present(aleart, animated: true)
-            
         }
+        
         switch currentState {
             case .new:
                 nameHabit = textField.text ?? "text is lost"
@@ -257,7 +257,7 @@ final class HabitViewController: UIViewController {
                 
                 habit = Habit(name: nameHabit, date: date, color: colorHabit)
                 
-                if !habit.isAlreadyTakenToday , datePicker.date <= Date.now {
+                if !habit.isAlreadyTakenToday, datePicker.date <= Date.now {
                     store.track(habit)
                 }
                 store.habits.append(habit)
@@ -265,7 +265,9 @@ final class HabitViewController: UIViewController {
                 dismiss(animated: true) {
                     self.delegate?.didChangeHabit()
                 }
+                
             case .edit:
+                guard let index = store.habits.firstIndex(where: { $0 == habit }) else { return }
                 correctName = textField.text ?? "text is lost"
                 correctDate = datePicker.date
                 correctColor = colorButton.backgroundColor ?? .clear
@@ -332,4 +334,10 @@ extension String {
         attributedText.addAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "Violet")!], range: myRange)
         return attributedText
     }
+}
+
+extension HabitViewController: UITextFieldDelegate {
+    
+    
+ 
 }
