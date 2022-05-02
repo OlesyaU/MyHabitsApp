@@ -44,7 +44,7 @@ final class HabitDetailsViewController: UIViewController {
         navigationController?.navigationBar.tintColor = UIColor(named: "Violet")
         navigationController?.navigationBar.tintColorDidChange()
         view.backgroundColor = .white
-        }
+    }
     
     private func layout() {
         view.addSubview(tableView)
@@ -79,7 +79,7 @@ extension HabitDetailsViewController: UITableViewDataSource {
         switch isTrack {
             case true:
                 cell.accessoryType = .checkmark
-
+                
             case false:
                 cell.accessoryType = .none
         }

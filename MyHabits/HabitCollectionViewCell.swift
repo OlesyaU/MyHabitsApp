@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 final class HabitCollectionViewCell: UICollectionViewCell {
     
     //    MARK: Properties and objects
@@ -15,6 +14,7 @@ final class HabitCollectionViewCell: UICollectionViewCell {
     private let store = HabitsStore.shared
     private var isTracked = false
     private var habit: Habit?
+    weak var delegate: HabitViewControllerDelegate?
     
     private  lazy var nameLabel: UILabel = {
         let label = UILabel()
@@ -123,6 +123,7 @@ final class HabitCollectionViewCell: UICollectionViewCell {
                 HabitsStore.shared.track(habit)
                 HabitsStore.shared.save()
                 counterLabel.text = "Счётчик: \(habit.trackDates.count)"
+                delegate?.didChangeHabit()
         }
     }
 }

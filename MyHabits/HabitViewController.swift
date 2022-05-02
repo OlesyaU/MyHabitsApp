@@ -60,7 +60,7 @@ final class HabitViewController: UIViewController {
         textField.delegate = self
         textField.addTarget(self, action: #selector(keepButtonTapped), for: .primaryActionTriggered)
         textField.addTarget(self, action: #selector(tapToTextField), for: .touchUpInside)
-      
+        
         return textField
     }()
     
@@ -197,6 +197,7 @@ final class HabitViewController: UIViewController {
         navigationController?.navigationBar.tintColor = UIColor(named: "Violet")
         navigationController?.navigationBar.tintColorDidChange()
         navigationItem.rightBarButtonItem = .init(title: "Сохранить", style: .done, target: self, action: #selector(keepButtonTapped))
+        navigationItem.rightBarButtonItem?.isEnabled = false
         navigationItem.leftBarButtonItem = .init(title: "Отменить", style: .plain, target: self, action: #selector(cancelButtonTapped))
         view.backgroundColor = .white
     }
@@ -242,12 +243,6 @@ final class HabitViewController: UIViewController {
     
     @objc private func keepButtonTapped(){
         textField.resignFirstResponder()
-        if textField.text == "" {
-            let aleart = UIAlertController(title: "Отсутствует название привычки", message: "Введите его в текстовое поле ", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Точно!", style: .default)
-            aleart.addAction(action)
-            present(aleart, animated: true)
-        }
         
         switch currentState {
             case .new:
@@ -276,12 +271,7 @@ final class HabitViewController: UIViewController {
                 store.save()
                 
                 navigationController?.popToRootViewController(animated: true)
-                //                    navigationController?.transitionCoordinator?.animate(alongsideTransition: nil) { _ in
-                //                        self.delegate?.didChangeHabit()
-                //                    }
-                //                    пока не работает...юзаю viewWillAppear
         }
-        
     }
     
     @objc private func tapToTextField() {
@@ -338,6 +328,7 @@ extension String {
 
 extension HabitViewController: UITextFieldDelegate {
     
-    
- 
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        navigationItem.rightBarButtonItem?.isEnabled = true
+    }
 }

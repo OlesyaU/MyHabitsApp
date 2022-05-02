@@ -9,7 +9,7 @@ import UIKit
 
 final class ProgressCollectionViewCell: UICollectionViewCell {
     
-//    MARK: Properties and objects
+    //    MARK: Properties and objects
     
     private let progressToday: Float  = HabitsStore.shared.todayProgress
     
@@ -23,7 +23,7 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
         return progress
     }()
     
-   private let textLabel: UILabel = {
+    private let textLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "SF Pro Text Semibold", size: 13)
@@ -41,7 +41,7 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-//   MARK: Lifecycle
+    //   MARK: Lifecycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -55,7 +55,7 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    MARK: Layout, configure
+    //    MARK: Layout, configure
     
     func configure() {
         progressView.progress = progressToday
