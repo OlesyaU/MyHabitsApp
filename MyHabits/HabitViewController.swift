@@ -36,6 +36,8 @@ final class HabitViewController: UIViewController {
     private var correctName = ""
     private var correctColor = UIColor()
     private var correctDate = Date()
+    private var datesTracked = [Date]()
+    private let cell = HabitCollectionViewCell()
     
     private let labelHibitName: UILabel = {
         let label = UILabel()
@@ -252,9 +254,6 @@ final class HabitViewController: UIViewController {
                 
                 habit = Habit(name: nameHabit, date: date, color: colorHabit)
                 
-                if !habit.isAlreadyTakenToday, datePicker.date <= Date.now {
-                    store.track(habit)
-                }
                 store.habits.append(habit)
                 
                 dismiss(animated: true) {
@@ -266,10 +265,12 @@ final class HabitViewController: UIViewController {
                 correctName = textField.text ?? "text is lost"
                 correctDate = datePicker.date
                 correctColor = colorButton.backgroundColor ?? .clear
-                let editedHabit = Habit(name: correctName, date: correctDate, color: correctColor)
-                store.habits[index] = editedHabit
+                store.habits[index] = habit
+                habit.name = correctName
+                habit.date = correctDate
+                habit.color = correctColor
                 store.save()
-                
+                print(#function)
                 navigationController?.popToRootViewController(animated: true)
         }
     }

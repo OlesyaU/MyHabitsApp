@@ -56,15 +56,17 @@ final class HabitCollectionViewCell: UICollectionViewCell {
     //   MARK: Lifecycle
     
     override init(frame: CGRect) {
-        super.init(frame: frame)
+ super.init(frame: frame)
         layer.cornerRadius = 10
         backgroundColor = .white
         layout()
+        print(#function)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     
     //    MARK: Layout, configure
     
@@ -82,6 +84,7 @@ final class HabitCollectionViewCell: UICollectionViewCell {
         } else {
             imageView.image = UIImage(systemName: "circle")
         }
+        print(#function)
     }
     
     private func layout() {
@@ -112,7 +115,7 @@ final class HabitCollectionViewCell: UICollectionViewCell {
     
     //    MARK: Actions, Gestures
     
-    @objc private  func circleTapped(){
+    @objc   func circleTapped(){
         guard let habit = habit else { return }
         switch habit.isAlreadyTakenToday {
             case true:
@@ -124,6 +127,7 @@ final class HabitCollectionViewCell: UICollectionViewCell {
                 HabitsStore.shared.save()
                 counterLabel.text = "Счётчик: \(habit.trackDates.count)"
                 delegate?.didChangeHabit()
+            
         }
     }
 }
