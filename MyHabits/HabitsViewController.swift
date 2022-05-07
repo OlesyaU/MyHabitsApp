@@ -12,7 +12,6 @@ final class HabitsViewController: UIViewController {
     //    MARK: Properties and objects
     
     private var store = HabitsStore.shared
-    private var habitViewController: HabitViewController?
     private var habitDetailsViewController = HabitDetailsViewController()
     private enum SectionType: Int, CaseIterable {
         case progress
@@ -76,10 +75,7 @@ final class HabitsViewController: UIViewController {
     // MARK: - Actions, Gestures
     
     @objc private func addHibitButtonPushed(){
-        habitViewController = HabitViewController(state: .new, habit: Habit.makeInitial())
-        habitViewController?.delegate = self
-        guard let habitVC = habitViewController else { return }
-        let nextVC = UINavigationController(rootViewController: habitVC)
+        let nextVC = UINavigationController(rootViewController: HabitViewController(state: .new, habit: Habit.makeInitial()))
         nextVC.modalPresentationStyle = .fullScreen
         navigationController?.present(nextVC, animated: true)
     }
@@ -107,8 +103,9 @@ extension HabitsViewController: UICollectionViewDataSource {
         guard let sectionType = SectionType(section: indexPath.section) else { return .init() }
         switch sectionType {
             case .progress:
+                let progress = HabitsStore.shared.todayProgress
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProgressCollectionViewCell.identifier, for: indexPath) as! ProgressCollectionViewCell
-                cell.configure()
+                cell.configure(progress: progress)
                 return cell
             case .habit:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HabitCollectionViewCell.identifier, for: indexPath) as! HabitCollectionViewCell
@@ -175,6 +172,7 @@ extension HabitsViewController {
 extension HabitsViewController: HabitViewControllerDelegate {
     func didChangeHabit() {
         collectionView.reloadData()
+        print(#function)
     }
 }
 

@@ -11,8 +11,15 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
     
     //    MARK: Properties and objects
     
+    var progress: Float  = HabitsStore.shared.todayProgress {
+        didSet {
+           configure(progress: progress)
+            print("progress from didset \(progress)")
+}
+    }
+    
     private lazy var progressView: UIProgressView = {
-        let progress = UIProgressView(progressViewStyle: .bar)
+        let progress = UIProgressView(progressViewStyle: .default)
         progress.translatesAutoresizingMaskIntoConstraints = false
         progress.clipsToBounds = true
         progress.layer.cornerRadius = 3
@@ -35,7 +42,7 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont(name: "SF Pro Text Semibold", size: 13)
         label.textColor = .systemGray
-        label.text = "\(HabitsStore.shared.todayProgress * 1000)" + " %"
+        label.text = "\(progress)" + " %"
         return label
     }()
     
@@ -55,10 +62,13 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
     
     //    MARK: Layout, configure
     
-    func configure() {
-        progressView.progress = HabitsStore.shared.todayProgress
-        valueLabel.text = String(Int(Double(HabitsStore.shared.todayProgress) * 100 )) + "%"
-    }
+    func configure(progress: Float) {
+        progressView.setProgress(progress, animated: true)
+        valueLabel.text = String(Int(Double(progress) * 100 )) + "%"
+        print(progress )
+        print("progress from configure \(progress)")
+        print(#function)
+ }
     
     private func layout() {
         [progressView,textLabel, valueLabel].forEach({contentView.addSubview($0)})

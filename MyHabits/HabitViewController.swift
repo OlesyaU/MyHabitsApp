@@ -36,8 +36,6 @@ final class HabitViewController: UIViewController {
     private var correctName = ""
     private var correctColor = UIColor()
     private var correctDate = Date()
-    private var datesTracked = [Date]()
-    private let cell = HabitCollectionViewCell()
     
     private let labelHibitName: UILabel = {
         let label = UILabel()
@@ -270,7 +268,6 @@ final class HabitViewController: UIViewController {
                 habit.date = correctDate
                 habit.color = correctColor
                 store.save()
-                print(#function)
                 navigationController?.popToRootViewController(animated: true)
         }
     }

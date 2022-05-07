@@ -84,7 +84,6 @@ final class HabitCollectionViewCell: UICollectionViewCell {
         } else {
             imageView.image = UIImage(systemName: "circle")
         }
-        print(#function)
     }
     
     private func layout() {
@@ -126,9 +125,10 @@ final class HabitCollectionViewCell: UICollectionViewCell {
                 HabitsStore.shared.track(habit)
                 HabitsStore.shared.save()
                 counterLabel.text = "Счётчик: \(habit.trackDates.count)"
-                delegate?.didChangeHabit()
-            
-        }
+                let progress = ProgressCollectionViewCell()
+                progress.progress = HabitsStore.shared.todayProgress
+                self.delegate?.didChangeHabit()
+       }
     }
 }
 
