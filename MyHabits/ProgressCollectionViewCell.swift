@@ -13,9 +13,9 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
     
     var progress: Float  = HabitsStore.shared.todayProgress {
         didSet {
-           configure(progress: progress)
+            configure(progress: progress)
             print("progress from didset \(progress)")
-}
+        }
     }
     
     private lazy var progressView: UIProgressView = {
@@ -68,7 +68,7 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
         print(progress )
         print("progress from configure \(progress)")
         print(#function)
- }
+    }
     
     private func layout() {
         [progressView,textLabel, valueLabel].forEach({contentView.addSubview($0)})
@@ -90,5 +90,4 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
             progressView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -constraint)
         ])
     }
-    
 }

@@ -56,7 +56,7 @@ final class HabitCollectionViewCell: UICollectionViewCell {
     //   MARK: Lifecycle
     
     override init(frame: CGRect) {
- super.init(frame: frame)
+        super.init(frame: frame)
         layer.cornerRadius = 10
         backgroundColor = .white
         layout()
@@ -66,7 +66,7 @@ final class HabitCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     
     //    MARK: Layout, configure
     
@@ -128,7 +128,7 @@ final class HabitCollectionViewCell: UICollectionViewCell {
                 let progress = ProgressCollectionViewCell()
                 progress.progress = HabitsStore.shared.todayProgress
                 self.delegate?.didChangeHabit()
-       }
+        }
     }
 }
 
