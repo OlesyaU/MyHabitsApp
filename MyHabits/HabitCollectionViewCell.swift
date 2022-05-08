@@ -125,8 +125,6 @@ final class HabitCollectionViewCell: UICollectionViewCell {
                 HabitsStore.shared.track(habit)
                 HabitsStore.shared.save()
                 counterLabel.text = "Счётчик: \(habit.trackDates.count)"
-                let progress = ProgressCollectionViewCell()
-                progress.progress = HabitsStore.shared.todayProgress
                 self.delegate?.didChangeHabit()
         }
     }

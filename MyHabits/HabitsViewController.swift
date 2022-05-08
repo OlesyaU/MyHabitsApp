@@ -111,6 +111,7 @@ extension HabitsViewController: UICollectionViewDataSource {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HabitCollectionViewCell.identifier, for: indexPath) as! HabitCollectionViewCell
                 let habit = store.habits[indexPath.item]
                 cell.configure(habit: habit)
+                cell.delegate = self
                 return cell
         }
     }
