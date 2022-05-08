@@ -123,9 +123,8 @@ final class HabitCollectionViewCell: UICollectionViewCell {
                 isTracked.toggle()
                 imageView.image = UIImage(systemName: "checkmark.circle.fill")
                 HabitsStore.shared.track(habit)
-                HabitsStore.shared.save()
                 counterLabel.text = "Счётчик: \(habit.trackDates.count)"
-                self.delegate?.didChangeHabit()
+                delegate?.didUpdateProgress()
         }
     }
 }

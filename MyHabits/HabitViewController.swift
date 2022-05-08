@@ -9,6 +9,7 @@ import UIKit
 
 protocol HabitViewControllerDelegate: AnyObject {
     func didChangeHabit()
+    func didUpdateProgress() 
 }
 
 final class HabitViewController: UIViewController {

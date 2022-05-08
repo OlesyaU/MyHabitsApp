@@ -11,12 +11,7 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
     
     //    MARK: Properties and objects
     
-    var progress: Float  = HabitsStore.shared.todayProgress {
-        didSet {
-            configure(progress: progress)
-            print("progress from didset \(progress)")
-        }
-    }
+    var progress: Float  = HabitsStore.shared.todayProgress
     
     private lazy var progressView: UIProgressView = {
         let progress = UIProgressView(progressViewStyle: .default)
@@ -62,12 +57,9 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
     
     //    MARK: Layout, configure
     
-    func configure(progress: Float) {
-        progressView.setProgress(progress, animated: true)
+    func configure(progress: Float, animated: Bool = false) {
+      progressView.setProgress(progress, animated: animated)
         valueLabel.text = String(Int(Double(progress) * 100 )) + "%"
-        print(progress )
-        print("progress from configure \(progress)")
-        print(#function)
     }
     
     private func layout() {

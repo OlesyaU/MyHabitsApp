@@ -175,6 +175,13 @@ extension HabitsViewController: HabitViewControllerDelegate {
         collectionView.reloadData()
         print(#function)
     }
+    
+    func didUpdateProgress() {
+        guard let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? ProgressCollectionViewCell else { return }
+        
+        let progress = HabitsStore.shared.todayProgress
+        cell.configure(progress: progress, animated: true)
+    }
 }
 
 
