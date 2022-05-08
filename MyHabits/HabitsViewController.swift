@@ -45,13 +45,11 @@ final class HabitsViewController: UIViewController {
         super.viewDidLoad()
         setNavigationBar()
         layout()
-        print(#function)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
-        print(#function)
     }
     
     //    MARK: - Layout, configure
@@ -173,7 +171,6 @@ extension HabitsViewController {
 extension HabitsViewController: HabitViewControllerDelegate {
     func didChangeHabit() {
         collectionView.reloadData()
-        print(#function)
     }
     
     func didUpdateProgress() {

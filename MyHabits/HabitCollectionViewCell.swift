@@ -60,7 +60,6 @@ final class HabitCollectionViewCell: UICollectionViewCell {
         layer.cornerRadius = 10
         backgroundColor = .white
         layout()
-        print(#function)
     }
     
     required init?(coder: NSCoder) {
@@ -136,5 +135,4 @@ extension HabitCollectionViewCell {
         static let basicInset = CGFloat(16)
         static let height = CGFloat(20)
     }
-    
 }
